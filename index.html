@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+
+  <!-- PWA & Mobile -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0b1d2a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Ramadan Countdown">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Arabic Calligraphy Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+
+  <title>العدّ التنازلي لشهر رمضان 2026</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Amiri', serif;
+      background: radial-gradient(circle at top, #1c3b57, #0b1d2a);
+      color: #ffffff;
+      text-align: center;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      direction: rtl;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: #f9d976;
+      margin-bottom: 20px;
+      text-shadow: 0 0 12px rgba(249,217,118,0.7);
+    }
+
+    #countdown {
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      background: rgba(0, 0, 0, 0.45);
+      padding: 25px 35px;
+      border-radius: 22px;
+      box-shadow: 0 0 30px rgba(249, 217, 118, 0.4);
+      margin-bottom: 25px;
+      width: 90%;
+      max-width: 620px;
+    }
+
+    #dua {
+      font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+      color: #a8ff78;
+      max-width: 900px;
+      line-height: 2;
+      min-height: 120px;
+      padding: 0 20px;
+      transition: opacity 1s ease-in-out;
+    }
+
+    footer {
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #dddddd;
+    }
+
+    /* Crescent Moon */
+    .moon {
+      position: absolute;
+      top: 40px;
+      right: 40px;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      box-shadow: -22px 0 0 0 #f9d976;
+      animation: glow 3s infinite alternate;
+    }
+
+    /* Stars */
+    .star {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { box-shadow: -22px 0 0 0 rgba(249,217,118,0.6); }
+      to   { box-shadow: -22px 0 0 0 rgba(249,217,118,1); }
+    }
+
+    @keyframes twinkle {
+      from { opacity: 0.3; }
+      to   { opacity: 1; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Crescent -->
+  <div class="moon"></div>
+
+  <!-- Stars -->
+  <div class="star" style="top:15%; left:20%;"></div>
+  <div class="star" style="top:30%; left:75%;"></div>
+  <div class="star" style="top:55%; left:30%;"></div>
+  <div class="star" style="top:65%; left:80%;"></div>
+  <div class="star" style="top:10%; left:55%;"></div>
+
+  <h1>🌙 العدّ التنازلي لشهر رمضان 2026</h1>
+
+  <div id="countdown"></div>
+  <div id="dua"></div>
+
+  <footer>
+    اللهم بلغنا رمضان في صحة وعافية
+  </footer>
+
+  <script>
+    const ramadanDate = new Date("February 18, 2026 00:00:00").getTime();
+
+    const duas = [
+      "اللهم بلغنا رمضان لا فاقدين ولا مفقودين، وأعنا فيه على الصيام والقيام وتلاوة القرآن، واجعلنا من عتقائك من النار.",
+      "اللهم أهلَّه علينا بالأمن والإيمان والسلامة والإسلام، والمسارعة إلى ما تحب وترضى، والعون على الصلاة والصيام وتلاوة القرآن.",
+      "اللهم بلغنا رمضان، لا فاقدين ولا مفقودين، اللهم بلغنا برضاك يا أرحم الراحمين عشر العتق من النيران.",
+      "اللهم بارك لنا فيما تبقى من شعبان وبلغنا رمضان، وارزقنا صيامه وقيامه إيماناً واحتساباً.",
+      "اللهم سلمنا لرمضان، وسلمه لنا، وتسلمه منا متقبلاً.",
+      "اللهم إنك عفو كريم تحب العفو فاعف عني.",
+      "اللهم اجعلنا في رمضان من الفائزين بالجنة، ومن العتقاء من النار، ومن الفائزين بليلة القدر."
+    ];
+
+    let duaIndex = 0;
+
+    // Countdown
+    const timer = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = ramadanDate - now;
+
+      if (distance <= 0) {
+        clearInterval(timer);
+        document.getElementById("countdown").innerHTML =
+          "🌙 رمضان مبارك 🌙<br>تقبل الله منا ومنكم صالح الأعمال";
+        document.getElementById("dua").innerHTML = "";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("countdown").innerHTML =
+        `${days} يوم ${hours} ساعة ${minutes} دقيقة ${seconds} ثانية`;
+    }, 1000);
+
+    // Rotate Duas
+    setInterval(() => {
+      const dua = document.getElementById("dua");
+      dua.style.opacity = 0;
+      setTimeout(() => {
+        dua.innerHTML = duas[duaIndex];
+        dua.style.opacity = 1;
+        duaIndex = (duaIndex + 1) % duas.length;
+      }, 1000);
+    }, 9000);
+  </script>
+
+  <!-- PWA Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(() => console.log('Service Worker registered'))
+          .catch(err => console.log('Service Worker error:', err));
+      });
+    }
+  </script>
+
+</body>
+</html>
