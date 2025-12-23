@@ -62,8 +62,28 @@
       transition: opacity 1s ease-in-out;
     }
 
+    /* DOWNLOAD BUTTON */
+    .download-btn {
+      background: linear-gradient(135deg, #f9d976, #f39f86);
+      color: #0b1d2a;
+      border: none;
+      padding: 14px 28px;
+      font-size: 1.1rem;
+      border-radius: 30px;
+      cursor: pointer;
+      margin: 20px 0;
+      font-family: 'Amiri', serif;
+      box-shadow: 0 0 20px rgba(249,217,118,0.6);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .download-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(249,217,118,0.9);
+    }
+
     footer {
-      margin-top: 20px;
+      margin-top: 15px;
       font-size: 0.9em;
       color: #dddddd;
     }
@@ -119,6 +139,13 @@
   <div id="countdown"></div>
   <div id="dua"></div>
 
+  <!-- DOWNLOAD BUTTON -->
+  <a href="ramadan-countdown.zip" download>
+    <button class="download-btn">
+      ⬇ تحميل المشروع
+    </button>
+  </a>
+
   <footer>
     اللهم بلغنا رمضان في صحة وعافية
   </footer>
@@ -138,7 +165,6 @@
 
     let duaIndex = 0;
 
-    // Countdown
     const timer = setInterval(() => {
       const now = new Date().getTime();
       const distance = ramadanDate - now;
@@ -160,7 +186,6 @@
         `${days} يوم ${hours} ساعة ${minutes} دقيقة ${seconds} ثانية`;
     }, 1000);
 
-    // Rotate Duas
     setInterval(() => {
       const dua = document.getElementById("dua");
       dua.style.opacity = 0;
@@ -170,17 +195,6 @@
         duaIndex = (duaIndex + 1) % duas.length;
       }, 1000);
     }, 9000);
-  </script>
-
-  <!-- PWA Service Worker -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('service-worker.js')
-          .then(() => console.log('Service Worker registered'))
-          .catch(err => console.log('Service Worker error:', err));
-      });
-    }
   </script>
 
 </body>
